@@ -1,0 +1,284 @@
+﻿
+
+
+
+
+CREATE TABLE IdentityDoc (
+
+ primaryKey UUID NOT NULL,
+
+ Series STRING NULL,
+
+ Number STRING NULL,
+
+ IssueDate TNULLABLEDATETIME NULL,
+
+ IssueOrg STRING NULL,
+
+ doctype_m0 UUID NOT NULL,
+
+ client_m0 UUID NOT NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE DocumentType (
+
+ primaryKey UUID NOT NULL,
+
+ Name STRING NULL,
+
+ Relevance BOOLEAN NULL,
+
+ Code STRING NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE House (
+
+ primaryKey UUID NOT NULL,
+
+ AddressString STRING NULL,
+
+ City STRING120 NULL,
+
+ Street STRING120 NULL,
+
+ Number STRING20 NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE client (
+
+ primaryKey UUID NOT NULL,
+
+ Surname STRING NULL,
+
+ Name STRING NULL,
+
+ Patronymic STRING NULL,
+
+ Sex VARCHAR(255) NULL,
+
+ Birthday DATE NULL,
+
+ House_m0 UUID NOT NULL,
+
+ addressreg_m0 UUID NOT NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE STORMNETLOCKDATA (
+
+ LockKey VARCHAR(300) NOT NULL,
+
+ UserName VARCHAR(300) NOT NULL,
+
+ LockDate TIMESTAMP(3) NULL,
+
+ PRIMARY KEY (LockKey));
+
+
+
+CREATE TABLE STORMSETTINGS (
+
+ primaryKey UUID NOT NULL,
+
+ Module VARCHAR(1000) NULL,
+
+ Name VARCHAR(255) NULL,
+
+ Value TEXT NULL,
+
+ "User" VARCHAR(255) NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE STORMAdvLimit (
+
+ primaryKey UUID NOT NULL,
+
+ "User" VARCHAR(255) NULL,
+
+ Published BOOLEAN NULL,
+
+ Module VARCHAR(255) NULL,
+
+ Name VARCHAR(255) NULL,
+
+ Value TEXT NULL,
+
+ HotKeyData INT NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE STORMFILTERSETTING (
+
+ primaryKey UUID NOT NULL,
+
+ Name VARCHAR(255) NOT NULL,
+
+ DataObjectView VARCHAR(255) NOT NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE STORMWEBSEARCH (
+
+ primaryKey UUID NOT NULL,
+
+ Name VARCHAR(255) NOT NULL,
+
+ "Order" INT NOT NULL,
+
+ PresentView VARCHAR(255) NOT NULL,
+
+ DetailedView VARCHAR(255) NOT NULL,
+
+ FilterSetting_m0 UUID NOT NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE STORMFILTERDETAIL (
+
+ primaryKey UUID NOT NULL,
+
+ Caption VARCHAR(255) NOT NULL,
+
+ DataObjectView VARCHAR(255) NOT NULL,
+
+ ConnectMasterProp VARCHAR(255) NOT NULL,
+
+ OwnerConnectProp VARCHAR(255) NULL,
+
+ FilterSetting_m0 UUID NOT NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE STORMFILTERLOOKUP (
+
+ primaryKey UUID NOT NULL,
+
+ DataObjectType VARCHAR(255) NOT NULL,
+
+ Container VARCHAR(255) NULL,
+
+ ContainerTag VARCHAR(255) NULL,
+
+ FieldsToView VARCHAR(255) NULL,
+
+ FilterSetting_m0 UUID NOT NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE UserSetting (
+
+ primaryKey UUID NOT NULL,
+
+ AppName VARCHAR(256) NULL,
+
+ UserName VARCHAR(512) NULL,
+
+ UserGuid UUID NULL,
+
+ ModuleName VARCHAR(1024) NULL,
+
+ ModuleGuid UUID NULL,
+
+ SettName VARCHAR(256) NULL,
+
+ SettGuid UUID NULL,
+
+ SettLastAccessTime TIMESTAMP(3) NULL,
+
+ StrVal VARCHAR(256) NULL,
+
+ TxtVal TEXT NULL,
+
+ IntVal INT NULL,
+
+ BoolVal BOOLEAN NULL,
+
+ GuidVal UUID NULL,
+
+ DecimalVal DECIMAL(20,10) NULL,
+
+ DateTimeVal TIMESTAMP(3) NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+CREATE TABLE ApplicationLog (
+
+ primaryKey UUID NOT NULL,
+
+ Category VARCHAR(64) NULL,
+
+ EventId INT NULL,
+
+ Priority INT NULL,
+
+ Severity VARCHAR(32) NULL,
+
+ Title VARCHAR(256) NULL,
+
+ Timestamp TIMESTAMP(3) NULL,
+
+ MachineName VARCHAR(32) NULL,
+
+ AppDomainName VARCHAR(512) NULL,
+
+ ProcessId VARCHAR(256) NULL,
+
+ ProcessName VARCHAR(512) NULL,
+
+ ThreadName VARCHAR(512) NULL,
+
+ Win32ThreadId VARCHAR(128) NULL,
+
+ Message VARCHAR(2500) NULL,
+
+ FormattedMessage TEXT NULL,
+
+ PRIMARY KEY (primaryKey));
+
+
+
+
+ ALTER TABLE IdentityDoc ADD CONSTRAINT FKed308058aae941769fe8e750c7dc3e41 FOREIGN KEY (doctype_m0) REFERENCES DocumentType; 
+CREATE INDEX Index0bd39281d8fda05ed3a3a401ae174b0783c41de7 on IdentityDoc (doctype_m0); 
+
+ ALTER TABLE IdentityDoc ADD CONSTRAINT FK8b311e021c814de8a83d333d004c3cb2 FOREIGN KEY (client_m0) REFERENCES client; 
+CREATE INDEX Indexd2f2fb0253878926caa831647aa932153845335d on IdentityDoc (client_m0); 
+
+ ALTER TABLE client ADD CONSTRAINT FK51abbf564558411e8899ca62ff008da8 FOREIGN KEY (House_m0) REFERENCES House; 
+CREATE INDEX Index0461ef3c4d0efdc9ff5d125a3ff28ae030aa80fa on client (House_m0); 
+
+ ALTER TABLE client ADD CONSTRAINT FKd0f2cf0f2e854b83b985e98191821c6e FOREIGN KEY (addressreg_m0) REFERENCES House; 
+CREATE INDEX Index7690a11ea87f9a237fa11ecce83da7864e012936 on client (addressreg_m0); 
+
+ ALTER TABLE STORMWEBSEARCH ADD CONSTRAINT FK3d85cedcad524b4a987e2ae49fcab591 FOREIGN KEY (FilterSetting_m0) REFERENCES STORMFILTERSETTING; 
+
+ ALTER TABLE STORMFILTERDETAIL ADD CONSTRAINT FK9a8443cb755240f3910ed71ffe88071a FOREIGN KEY (FilterSetting_m0) REFERENCES STORMFILTERSETTING; 
+
+ ALTER TABLE STORMFILTERLOOKUP ADD CONSTRAINT FK2a44b8b453404401b4d3bc8c83328886 FOREIGN KEY (FilterSetting_m0) REFERENCES STORMFILTERSETTING; 
+
